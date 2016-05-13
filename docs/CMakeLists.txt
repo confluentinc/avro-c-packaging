@@ -17,6 +17,8 @@
 # under the License.
 #
 
+include(GNUInstallDirs)
+
 set (AVRO_DOC_SRC
     index.txt
 )
@@ -41,7 +43,7 @@ if (ASCIIDOC_EXECUTABLE AND SOURCE_HIGHLIGHT_EXECUTABLE)
             DEPENDS "${_file_path}"
             COMMENT "asciidoc ${_file}"
         )
-        install(FILES "${_html_out}" DESTINATION share/doc/avro-c)
+        install(FILES "${_html_out}" DESTINATION "${CMAKE_INSTALL_DOCDIR}")
         add_custom_target("${_file_we}_html" ALL echo -n
             DEPENDS "${_file}" "${_html_out}"
         )
