@@ -1,0 +1,112 @@
+From: Magnus Edenhill <magnus@confluent.io>
+Date: Fri, 13 May 2016 10:37:10 +0200
+Subject: Use GNUInstallDirs for proper install locations
+
+---
+ CMakeLists.txt      |  1 +
+ docs/CMakeLists.txt |  4 +++-
+ src/CMakeLists.txt  | 22 ++++++++++++----------
+ 3 files changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fda4382..cbed507 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -20,6 +20,7 @@ cmake_minimum_required(VERSION 2.4)
+ project(AvroC)
+ enable_testing()
+ 
++include(GNUInstallDirs)
+ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
+ 
+ # Eliminates warning about linker paths when linking both zlib and
+diff --git a/docs/CMakeLists.txt b/docs/CMakeLists.txt
+index 1f67065..ae6aba6 100644
+--- a/docs/CMakeLists.txt
++++ b/docs/CMakeLists.txt
+@@ -17,6 +17,8 @@
+ # under the License.
+ #
+ 
++include(GNUInstallDirs)
++
+ set (AVRO_DOC_SRC
+     index.txt
+ )
+@@ -41,7 +43,7 @@ if (ASCIIDOC_EXECUTABLE AND SOURCE_HIGHLIGHT_EXECUTABLE)
+             DEPENDS "${_file_path}"
+             COMMENT "asciidoc ${_file}"
+         )
+-        install(FILES "${_html_out}" DESTINATION share/doc/avro-c)
++        install(FILES "${_html_out}" DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+         add_custom_target("${_file_we}_html" ALL echo -n
+             DEPENDS "${_file}" "${_html_out}"
+         )
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index c21f1ce..76f2848 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -17,6 +17,8 @@
+ # under the License.
+ #
+ 
++include(GNUInstallDirs)
++
+ set(AVRO_SRC
+     allocation.c
+     array.c
+@@ -99,10 +101,10 @@ endif(NOT WIN32)
+ 
+ install(FILES
+         ${CMAKE_CURRENT_SOURCE_DIR}/avro.h
+-        DESTINATION include)
++        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+ install(DIRECTORY
+         ${CMAKE_CURRENT_SOURCE_DIR}/avro
+-        DESTINATION include
++        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+         FILES_MATCHING PATTERN "*.h")
+ 
+ if (WIN32)
+@@ -113,9 +115,9 @@ install(TARGETS avro-static
+        )
+ else(WIN32)
+ install(TARGETS avro-static avro-shared
+-        RUNTIME DESTINATION bin
+-        LIBRARY DESTINATION lib
+-        ARCHIVE DESTINATION lib
++        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
++        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
++        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        )
+ endif(WIN32)
+ 
+@@ -125,23 +127,23 @@ set(prefix ${CMAKE_INSTALL_PREFIX})
+ set(VERSION ${AVRO_VERSION})
+ configure_file(avro-c.pc.in avro-c.pc)
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/avro-c.pc
+-        DESTINATION lib/pkgconfig)
++        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+ 
+ add_executable(avrocat avrocat.c)
+ target_link_libraries(avrocat avro-static)
+-install(TARGETS avrocat RUNTIME DESTINATION bin)
++install(TARGETS avrocat RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+ 
+ add_executable(avroappend avroappend.c)
+ target_link_libraries(avroappend avro-static)
+-install(TARGETS avroappend RUNTIME DESTINATION bin)
++install(TARGETS avroappend RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+ 
+ if (NOT WIN32)
+ #TODO: Port getopt() to Windows to compile avropipe.c and avromod.c
+ add_executable(avropipe avropipe.c)
+ target_link_libraries(avropipe avro-static)
+-install(TARGETS avropipe RUNTIME DESTINATION bin)
++install(TARGETS avropipe RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+ 
+ add_executable(avromod avromod.c)
+ target_link_libraries(avromod avro-static)
+-install(TARGETS avromod RUNTIME DESTINATION bin)
++install(TARGETS avromod RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+ endif(NOT WIN32)
