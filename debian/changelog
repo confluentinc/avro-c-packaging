@@ -1,0 +1,5 @@
+avro-c (1.8.0-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Magnus Edenhill <support@confluent.io>  Fri, 13 May 2016 10:44:14 +0200

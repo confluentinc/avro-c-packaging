@@ -1,0 +1,9 @@
+debian/*.log
+debian/*.substvars
+debian/tmp
+debian/files
+debian/libavro-c-dev
+debian/libavro-c1
+debian/*.debhelper
+obj-*
+*~
