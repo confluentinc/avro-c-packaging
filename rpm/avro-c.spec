@@ -10,7 +10,9 @@ Source:	 avro-c-%{version}.tar.gz
 
 Patch0: 0001-Use-GNUInstallDirs-for-proper-install-locations.patch
 
-BuildRequires: cmake zlib-devel snappy-devel lzma-devel jansson-devel
+BuildRequires: cmake zlib-devel snappy-devel jansson-devel
+# lzma-devel not available on fc20
+#BuildRequires: lzma-devel
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %description
