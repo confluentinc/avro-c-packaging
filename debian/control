@@ -1,7 +1,7 @@
 Source: avro-c
 Priority: optional
 Maintainer: Confluent Inc. <support@confluent.io>
-Build-Depends: debhelper (>= 9), cmake, libsnappy-dev, zlib1g-dev, liblzma-dev, libjansson-dev
+Build-Depends: debhelper (>= 9), pkg-config, cmake, libsnappy-dev, zlib1g-dev, liblzma-dev, libjansson-dev
 Standards-Version: 3.9.6
 Section: libs
 Homepage: http://avro.apache.org
