@@ -15,6 +15,14 @@ BuildRequires: cmake zlib-devel snappy-devel jansson-devel
 #BuildRequires: lzma-devel
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
+# Something odd happens with AutoReq.
+# snappy-devel provides 'pkgconfig(snappy)', but for some reason
+# AutoReq picks up 'pkgconfig(libsnappy)' so we insert a hack here
+# to change it to the right Req
+%filter_from_requires s/pkgconfig(libsnappy)/pkgconfig(snappy)/g
+# After defining the filter, we need to call this to set it up
+%filter_setup
+
 %description
 Apache Avro™ is a data serialization system.
 Avro provides:
