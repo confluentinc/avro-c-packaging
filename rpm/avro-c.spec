@@ -80,6 +80,7 @@ make %{?_smp_mflags}
 %install
 rm -rf %{buildroot}
 DESTDIR=%{buildroot} make install
+rm -f %{buildroot}/usr/share/doc/AvroC/index.html
 
 %clean
 rm -rf %{buildroot}
